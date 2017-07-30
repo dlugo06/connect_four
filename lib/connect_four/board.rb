@@ -1,6 +1,10 @@
 module ConnectFour
   class Board
-    attr_reader :move
+    attr_reader :move, :size, :grid
+
+    def initialize
+      @size = [6, 7]
+    end
 
     def play(move)
       @move = move
