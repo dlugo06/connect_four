@@ -8,4 +8,10 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  def suppress_log_output
+    allow(STDOUT).to receive(:puts) # this disables puts
+    logger = double('STDOUT').as_null_object
+    allow(STDOUT).to receive(:new).and_return(logger)
+  end
 end

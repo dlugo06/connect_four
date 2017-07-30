@@ -1,13 +1,18 @@
 module ConnectFour
   class Board
-    attr_reader :move, :size, :grid
+    attr_reader :current_move, :size, :discs, :grid
 
     def initialize
+      # @ size = [rows, columns]
       @size = [6, 7]
+      # @discs is an array of disc objects
+      @discs = []
+      @grid = create_grid_from_size(size)
     end
 
-    def play(move)
-      @move = move
+    def set_disc(column)
+      # game calls play which calls board.play
+      @current_move = column
       update
       render
     end
@@ -25,12 +30,18 @@ module ConnectFour
     private
 
     def render
-      puts "[board] updated with move: #{move}"
+      puts "[board] updated with move: #{current_move}"
       puts
     end
 
     def update
       # update the board's state based on the player's moee
+    end
+
+    def create_grid_from_size(size_arr)
+      rows = size_arr[0]
+      columns = size_arr[1]
+      Array.new(rows) { Array.new(columns) }
     end
   end
 end
