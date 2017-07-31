@@ -1,4 +1,3 @@
-require 'pry'
 module ConnectFour
   class Game
     def initialize
@@ -20,7 +19,6 @@ module ConnectFour
     def play
       board.display_grid
       column = current_player.move
-      binding.pry
       return if move.empty?
 
       board.set_disc(column)
