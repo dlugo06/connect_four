@@ -1,8 +1,8 @@
 module ConnectFour
   class Game
-    def initialize(players)
+    def initialize
       @board   = Board.new
-      @players = players.map { |name| Player.new(name) }
+      @players = []
       @current_player_index = 0
     end
 
@@ -17,6 +17,7 @@ module ConnectFour
     attr_reader :abort, :board, :players, :current_player_index
 
     def play
+      board.display_grid
       column = current_player.move
       return if move.empty?
 
@@ -27,7 +28,13 @@ module ConnectFour
     end
 
     def welcome
-      puts "[Connect Four] #{players.map(&:name).join(' vs ')}"
+      names = []
+      puts 'Player 1 please enter your name:'
+      names << STDIN.gets.chomp.capitalize
+      puts 'Player 2 please enter your name:'
+      names << STDIN.gets.chomp.capitalize
+      create_players(names)
+      puts "[Connect Four] #{@players.map(&:name).join(' vs ')}"
       puts 'Ctrl-C to abort.'
       puts
     end
@@ -54,6 +61,11 @@ module ConnectFour
 
     def aborted?
       !!abort
+    end
+
+    def create_players(names_arr)
+      names_arr.each { |name| @players << Player.new(name) }
+      @players.each_with_index { |player, i| player.assign_color(i) }
     end
   end
 end

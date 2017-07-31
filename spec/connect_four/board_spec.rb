@@ -3,10 +3,11 @@ require 'board_spec_helper'
 
 RSpec.describe ConnectFour::Board do
   let(:board) { ConnectFour::Board.new }
+  let(:player1) { ConnectFour::Player.new('alice') }
+  let(:player2) { ConnectFour::Player.new('bob') }
   let(:h_win) { winning_grid('h') }
   let(:v_win) { winning_grid('v') }
   let(:d_win) { winning_grid('d') }
-  let(:game) { ConnectFour::Game.new(['alice', 'bob']) }
 
   describe '#initialize' do
     it 'can initialize a board' do
@@ -14,7 +15,7 @@ RSpec.describe ConnectFour::Board do
     end
 
     it 'has correct attributes' do
-      expect(board).to have_attributes(size: [6, 7], discs: [], grid: empty_grid([6, 7]))
+      expect(board).to have_attributes(size: [6, 7], grid: empty_grid([6, 7]))
     end
   end
 
@@ -76,7 +77,8 @@ RSpec.describe ConnectFour::Board do
 
   describe '#display_grid' do
     before(:example) do
-      suppress_stdin('3')
+      allow(board).to receive(:system)
+      suppress_stdin('l')
     end
 
     it 'displays a grid with icons' do
