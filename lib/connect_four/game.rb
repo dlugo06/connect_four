@@ -1,10 +1,10 @@
-require 'pry'
 module ConnectFour
   class Game
     def initialize
       @board   = Board.new
       @players = []
       @current_player_index = 0
+      @winner = false
     end
 
     def launch
@@ -50,12 +50,11 @@ module ConnectFour
     end
 
     def summarize
-      winner = board.connect_four?
       full = board.full?
 
       # announce if game ends in a tie, otherwise the name of the winner.
       puts
-      puts "Congratuations! #{winner.name} has won!" if winner
+      puts "Congratuations! #{@winner.name} has won!" if @winner
       puts "The board is full, the game is a tie." if full
       puts '[Connect Four] game has ended.' unless aborted?
     end
@@ -70,8 +69,9 @@ module ConnectFour
     end
 
     def done?
+      @winner = board.connect_four?
       # check if game play is complete (ie: a player won or the boad is full)
-      board.connect_four? || board.full? || aborted?
+      @winner || board.full? || aborted?
     end
 
     def aborted?
