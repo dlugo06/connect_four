@@ -1,13 +1,11 @@
 module ConnectFour
   class Board
-    attr_reader :current_move, :size, :discs, :grid
+    attr_reader :current_move, :size, :grid
 
     def initialize
       # @ size = [rows, columns]
       @size = [6, 7]
-      # @discs is an array of disc objects
-      @discs = []
-      # @grid is array or arrays of nil or disc objects
+      # @grid is array or arrays of nil or player objects
       @grid = create_grid_from_size(size)
     end
 
@@ -19,13 +17,20 @@ module ConnectFour
     end
 
     def connect_four?
-      
+
       false
     end
 
     def full?
       # evaluate if the board is full
       false
+    end
+
+    def display_grid
+      system('clear')
+      print 'Move (L)eft or (R)ight then (Enter) to select where to drop your disc.'
+      print grid_string
+      collect_response
     end
 
     private
@@ -36,7 +41,7 @@ module ConnectFour
     end
 
     def update
-      # update the board's state based on the player's moee
+      # update the board's state based on the player's move
     end
 
     def create_grid_from_size(size_arr)
@@ -45,8 +50,25 @@ module ConnectFour
       Array.new(rows) { Array.new(columns) }
     end
 
-    def display_grid
-      string =
+    def display_disc(y,x)
+      disc = @grid[y][x]
+      disc.nil? ? ' ' : icons[disc.color.to_sym]
+    end
+
+    def collect_response
+      response = STDIN.gets.chomp.downcase
+      unless response == 'l' || response == 'r'
+        print "Please select only (L)eft or (R)ight (or Ctrl-C to quit)"
+        collect_response
+      end
+      response
+    end
+
+    def icons
+      { blue: '🔹', gold: '🔸' }
+    end
+
+    def grid_string
       %(
       |#{display_disc(0,0)} |#{display_disc(0,1)} |#{display_disc(0,2)} |#{display_disc(0,3)} |#{display_disc(0,4)} |#{display_disc(0,5)} |#{display_disc(0,6)} |
       |#{display_disc(1,0)} |#{display_disc(1,1)} |#{display_disc(1,2)} |#{display_disc(1,3)} |#{display_disc(1,4)} |#{display_disc(1,5)} |#{display_disc(1,6)} |
@@ -55,19 +77,6 @@ module ConnectFour
       |#{display_disc(4,0)} |#{display_disc(4,1)} |#{display_disc(4,2)} |#{display_disc(4,3)} |#{display_disc(4,4)} |#{display_disc(4,5)} |#{display_disc(4,6)} |
       |#{display_disc(5,0)} |#{display_disc(5,1)} |#{display_disc(5,2)} |#{display_disc(5,3)} |#{display_disc(5,4)} |#{display_disc(5,5)} |#{display_disc(5,6)} |
       )
-      system('clear')
-      print string
-      collect_response
-    end
-
-    def display_disc(y,x)
-      disc_at_xy = @grid[y][x]
-      disc_at_xy.nil? ? '   ' : disc_at_xy.player.icon
-    end
-
-    def collect_response
-      response = STDIN.gets.chomp
-      puts response
     end
   end
 end
