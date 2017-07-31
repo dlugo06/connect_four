@@ -1,19 +1,22 @@
+require 'pry'
 module ConnectFour
   class Board
-    attr_reader :current_move, :size, :grid
+    attr_reader :size, :grid
 
     def initialize
       # @ size = [rows, columns]
-      @size = [6, 7]
       # @grid is array or arrays of nil or player objects
+      @size = [6, 7]
       @grid = create_grid_from_size(size)
     end
 
-    def set_disc(column)
-      # game calls play which calls board.play
-      @current_move = column
-      update
-      render
+    def update(player)
+      column = player.location
+      (size[0] - 1).downto(0) do |row|
+        if grid[row][column].nil?
+          return grid[row][column] = player
+        end
+      end
     end
 
     def connect_four?
@@ -22,27 +25,29 @@ module ConnectFour
     end
 
     def full?
-      # evaluate if the board is full
-      false
+      grid.each do |row|
+        row.each do |location|
+          return false if location.nil?
+        end
+      end
+      true
     end
 
-    def display_grid
+    def display_grid_for(player)
       system('clear')
-      print 'Move (L)eft or (R)ight then (Enter) to select where to drop your disc.'
-      print grid_string
-      collect_response
+      puts "#{player.name}'s turn"
+      puts 'Move (L)eft or (R)ight then (D)rop to select where to drop your disc.'
+      print display_icon_at_location(player)
+      puts grid_string
+    end
+
+    def full_column?(location)
+      !(grid[0][location].nil?)
     end
 
     private
 
-    def render
-      puts "[board] updated with move: #{current_move}"
-      puts
-    end
 
-    def update
-      # update the board's state based on the player's move
-    end
 
     def create_grid_from_size(size_arr)
       rows = size_arr[0]
@@ -55,13 +60,11 @@ module ConnectFour
       disc.nil? ? ' ' : icons[disc.color.to_sym]
     end
 
-    def collect_response
-      response = STDIN.gets.chomp.downcase
-      unless response == 'l' || response == 'r'
-        print "Please select only (L)eft or (R)ight (or Ctrl-C to quit)"
-        collect_response
-      end
-      response
+    def display_icon_at_location(player)
+      output = ' ' * 7
+      spaces = player.location
+      icon = icons[player.color.to_sym]
+      output + ('   ' * spaces) + icon
     end
 
     def icons
