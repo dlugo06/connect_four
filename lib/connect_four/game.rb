@@ -17,10 +17,10 @@ module ConnectFour
     attr_reader :abort, :board, :players, :current_player_index
 
     def play
-      move = current_player.move
+      column = current_player.move
       return if move.empty?
 
-      board.play(move)
+      board.set_disc(column)
       assign_next_player
     rescue Interrupt
       @abort = true
