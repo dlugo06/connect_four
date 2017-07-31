@@ -11,4 +11,27 @@ RSpec.describe ConnectFour::Player do
     it 'has correct attributes' do
     end
   end
+
+  describe '#move' do
+    it 'updates player location' do
+    end
+  end
+
+  describe '#reset_location' do
+    it 'sets location back to 0' do
+    end
+  end
+
+  describe '#sanitize_location' do
+    it 'adjusts location when < 0' do
+    end
+
+    it 'adjusts location when > columns' do
+    end
+  end
+
+  describe '#assign_color' do
+    it 'sets player color based on index' do
+    end
+  end
 end

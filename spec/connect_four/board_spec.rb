@@ -19,6 +19,11 @@ RSpec.describe ConnectFour::Board do
     end
   end
 
+  describe '#update' do
+    it 'updates the grid with gravity physics!' do
+    end
+  end
+
   describe '#connect_four?' do
     context 'win' do
       it 'verifies horizontal win' do
@@ -37,24 +42,14 @@ RSpec.describe ConnectFour::Board do
       end
     end
 
-    context 'draw' do
-    end
-
     context 'no winner yet' do
+      it 'returns false when there is no winner' do
+      end
     end
   end
 
   describe '#full?' do
-
-  end
-
-  describe '#update' do
-
-  end
-
-  describe '#create_grid_from_size' do
-    it 'creates empty grid' do
-      expect(board.grid).to eq empty_grid(board.size)
+    it 'correctly assesses if board if full' do
     end
   end
 
@@ -68,6 +63,64 @@ RSpec.describe ConnectFour::Board do
       board.instance_variable_set(:@grid, d_win)
       expect{ board.send(:display_grid_for, player1) }.to output(include('🔹', '🔸')).to_stdout
       expect{ board.send(:display_grid_for, player1) }.to_not output(include('nil')).to_stdout
+    end
+  end
+
+  describe '#full_column?' do
+    it 'correctly displays if a column is full' do
+    end
+  end
+
+  describe '#check_location' do
+    it 'returns nil if out of bounds' do
+    end
+
+    it 'returns nil if it equals nil' do
+    end
+
+    it 'returns a player instance if found' do
+    end
+  end
+
+  describe 'assessors' do
+    context 'vertical' do
+      it 'checks 3 values above' do
+      end
+    end
+
+    context 'horizontal' do
+      it 'checks 3 values to the right' do
+      end
+    end
+
+    context 'diagonal' do
+      it 'checks 3 values diagonally up and right' do
+      end
+
+      it 'checks 3 values diagonally up and left' do
+      end
+    end
+  end
+
+  describe '#create_grid_from_size' do
+    it 'creates empty grid' do
+      expect(board.grid).to eq empty_grid(board.size)
+    end
+  end
+
+  describe '#display_disc' do
+    it 'displays a single icon when found' do
+    end
+
+    it 'displays blank when not found' do
+    end
+  end
+
+  describe '#grid_string' do
+    it 'outputs a 6 by 7 grid' do
+    end
+
+    it 'includes the correct discs' do
     end
   end
 end

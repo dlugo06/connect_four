@@ -19,12 +19,16 @@ RSpec.describe ConnectFour::Game do
   end
 
   describe '#launch' do
-    before(:example) do
-    end
     it 'welcomes the players' do
     end
 
     it 'creates the players from names' do
+    end
+
+    it 'exits safely when interrupted' do
+    end
+
+    it 'displays results when game is over' do
     end
   end
 end

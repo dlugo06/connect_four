@@ -18,18 +18,19 @@ git commits and tags, and push the `.gem` file to
 
 ## Usage
 
-To start a Connect Four game (with players named Alice and Bob) invoke the
+To start a Connect Four game invoke the
 following from the command-line (after installing the gem):
 
-    $ connect_four alice bob
+    $ connect_four
 
-Alice and Bob will each be prompted for their turn until the board is full or
+Two players will be prompted for their names.
+Players will then take their turn until the board is full or
 one of them plays a winning hand.
 
 If you do not wish to install the gem, you can still run the `connect_four`
 executable from within the project directory by invoking:
 
-    $ ./exe/connect_four alice bob
+    $ ./exe/connect_four
 
 ## License
 
