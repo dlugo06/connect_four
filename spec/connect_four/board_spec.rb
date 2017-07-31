@@ -23,17 +23,17 @@ RSpec.describe ConnectFour::Board do
     context 'win' do
       it 'verifies horizontal win' do
         board.instance_variable_set(:@grid, h_win)
-        expect(board.connect_four?).to eq true
+        expect(board.connect_four?).to eq player1
       end
 
       it 'verifies vertical win' do
         board.instance_variable_set(:@grid, v_win)
-        expect(board.connect_four?).to eq true
+        expect(board.connect_four?).to eq player1
       end
 
       it 'verifies diagonal win' do
         board.instance_variable_set(:@grid, d_win)
-        expect(board.connect_four?).to eq true
+        expect(board.connect_four?).to eq player2
       end
     end
 

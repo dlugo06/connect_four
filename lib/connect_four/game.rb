@@ -50,8 +50,13 @@ module ConnectFour
     end
 
     def summarize
+      winner = board.connect_four?
+      full = board.full?
+
       # announce if game ends in a tie, otherwise the name of the winner.
       puts
+      puts "Congratuations! #{winner.name} has won!" if winner
+      puts "The board is full, the game is a tie." if full
       puts '[Connect Four] game has ended.' unless aborted?
     end
 

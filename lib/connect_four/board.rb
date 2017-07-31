@@ -20,8 +20,36 @@ module ConnectFour
     end
 
     def connect_four?
-
-      false
+      result = false
+      (size[0] - 1).downto(0) do |y|
+        grid[y].each_with_index do |disc, x|
+          starting = check_location(y, x)
+          if starting
+            player = starting
+            vertical = check_location(y - 1, x)
+            diagonal_right = check_location(y - 1, x + 1)
+            diagonal_left = check_location(y - 1, x - 1)
+            horizontal = check_location(y, x + 1)
+            if vertical
+               vertical_win = vertical_assess([y - 2, x], player)
+               return vertical_win if vertical_win
+            end
+            if horizontal
+              horizontal_win = horizontal_assess([y, x + 2], player)
+              return horizontal_win if horizontal_win
+            end
+            if diagonal_right
+              diagonal_right_win = diagonal_right_assess([y - 2, x + 2], player)
+              return diagonal_right_win if diagonal_right_win
+            end
+            if diagonal_left
+              diagonal_left_win = diagonal_left_assess([y - 2, x - 2], player)
+              return diagonal_left_win if diagonal_left_win
+            end
+          end
+        end
+      end
+      result
     end
 
     def full?
@@ -47,7 +75,46 @@ module ConnectFour
 
     private
 
+    def check_location(y, x)
+      return nil if (y == size[0] || y < 0) || (x == size[1] || x < 0)
+      grid[y][x]
+    end
 
+    def diagonal_right_assess(location, player)
+      third = check_location(location[0], location[1])
+      fourth = check_location(location[0] - 1, location[1] + 1)
+      if third == player && fourth == player
+        return player
+      end
+      false
+    end
+
+    def diagonal_left_assess(location, player)
+      third = check_location(location[0], location[1])
+      fourth = check_location(location[0] - 1, location[1] - 1)
+      if third == player && fourth == player
+        return player
+      end
+      false
+    end
+
+    def vertical_assess(location, player)
+      third = check_location(location[0], location[1])
+      fourth = check_location(location[0] - 1, location[1])
+      if third == player && fourth == player
+        return player
+      end
+      false
+    end
+
+    def horizontal_assess(location, player)
+      third = check_location(location[0], location[1])
+      fourth = check_location(location[0], location[1] + 1)
+      if third == player && fourth == player
+        return player
+      end
+      false
+    end
 
     def create_grid_from_size(size_arr)
       rows = size_arr[0]
