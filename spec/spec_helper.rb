@@ -1,5 +1,6 @@
 require 'bundler/setup'
 require 'connect_four'
+require 'stringio'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -13,5 +14,9 @@ RSpec.configure do |config|
     allow(STDOUT).to receive(:puts) # this disables puts
     logger = double('STDOUT').as_null_object
     allow(STDOUT).to receive(:new).and_return(logger)
+  end
+
+  def suppress_stdin(value)
+    allow(STDIN).to receive(:gets).and_return value
   end
 end

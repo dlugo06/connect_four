@@ -7,7 +7,7 @@ RSpec.configure do |config|
   end
 
   def winning_grid(type)
-    grid = empty_grid
+    grid = empty_grid(board.size)
 
     locations = case type
     when 'h'

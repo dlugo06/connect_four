@@ -6,6 +6,7 @@ RSpec.describe ConnectFour::Board do
   let(:h_win) { winning_grid('h') }
   let(:v_win) { winning_grid('v') }
   let(:d_win) { winning_grid('d') }
+  let(:game) { ConnectFour::Game.new(['alice', 'bob']) }
 
   describe '#initialize' do
     it 'can initialize a board' do
@@ -70,6 +71,18 @@ RSpec.describe ConnectFour::Board do
   describe '#create_grid_from_size' do
     it 'creates empty grid' do
       expect(board.grid).to eq empty_grid(board.size)
+    end
+  end
+
+  describe '#display_grid' do
+    before(:example) do
+      suppress_stdin('3')
+    end
+
+    it 'displays a grid with icons' do
+      board.instance_variable_set(:@grid, d_win)
+      expect{ board.send(:display_grid) }.to output(include('🔹', '🔸')).to_stdout
+      expect{ board.send(:display_grid) }.to_not output(include('nil')).to_stdout
     end
   end
 end
