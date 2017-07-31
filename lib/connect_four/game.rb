@@ -30,7 +30,7 @@ module ConnectFour
       current_player.sanitize_location(board.size[0])
       board.display_grid_for(current_player)
       response = current_player.move
-      ui_loop unless response == 'd'
+      ui_loop unless response == 'd' && !(board.full_column?(current_player.location))
       response
     end
 

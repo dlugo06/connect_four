@@ -37,6 +37,10 @@ module ConnectFour
       puts grid_string
     end
 
+    def full_column?(location)
+      !(grid[0][location].nil?)
+    end
+
     private
 
 
