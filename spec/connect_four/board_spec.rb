@@ -48,12 +48,6 @@ RSpec.describe ConnectFour::Board do
 
   end
 
-  describe '#render' do
-    it 'displays the move' do
-      expect{ board.set_disc(3) }.to output(include('3')).to_stdout
-    end
-  end
-
   describe '#update' do
 
   end
@@ -64,7 +58,7 @@ RSpec.describe ConnectFour::Board do
     end
   end
 
-  describe '#display_grid' do
+  describe '#display_grid_for' do
     before(:example) do
       allow(board).to receive(:system)
       suppress_stdin('l')
@@ -72,8 +66,8 @@ RSpec.describe ConnectFour::Board do
 
     it 'displays a grid with icons' do
       board.instance_variable_set(:@grid, d_win)
-      expect{ board.send(:display_grid) }.to output(include('🔹', '🔸')).to_stdout
-      expect{ board.send(:display_grid) }.to_not output(include('nil')).to_stdout
+      expect{ board.send(:display_grid_for, player1) }.to output(include('🔹', '🔸')).to_stdout
+      expect{ board.send(:display_grid_for, player1) }.to_not output(include('nil')).to_stdout
     end
   end
 end
