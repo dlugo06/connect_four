@@ -19,17 +19,6 @@ RSpec.describe ConnectFour::Board do
     end
   end
 
-  describe '#set_disc' do
-    before(:example) do
-      suppress_stdout
-      board.set_disc(3)
-    end
-
-    it 'contains a move' do
-      expect(board).to have_attributes(current_move: 3)
-    end
-  end
-
   describe '#connect_four?' do
     context 'win' do
       it 'verifies horizontal win' do
