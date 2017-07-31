@@ -26,12 +26,15 @@ module ConnectFour
       @abort = true
     end
 
-    def ui_loop
+    def ui_loop(notice = nil)
       current_player.sanitize_location(board.size[0])
       board.display_grid_for(current_player)
+      puts notice if notice
       response = current_player.move
-      ui_loop unless response == 'd' && !(board.full_column?(current_player.location))
-      response
+      column_full = board.full_column?(current_player.location)
+      invalid_column = column_full && !response.empty? && response == 'd'
+      notice = invalid_column ? 'That column is full, try another.' : nil
+      ui_loop(notice) unless response == 'd' && !(column_full)
     end
 
     def welcome
