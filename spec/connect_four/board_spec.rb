@@ -19,7 +19,7 @@ RSpec.describe ConnectFour::Board do
 
   describe '#set_disc' do
     before(:example) do
-      suppress_log_output
+      suppress_stdout
       board.set_disc(3)
     end
 

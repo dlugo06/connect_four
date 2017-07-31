@@ -9,7 +9,7 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-  def suppress_log_output
+  def suppress_stdout
     allow(STDOUT).to receive(:puts) # this disables puts
     logger = double('STDOUT').as_null_object
     allow(STDOUT).to receive(:new).and_return(logger)
