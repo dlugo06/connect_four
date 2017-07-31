@@ -25,8 +25,12 @@ module ConnectFour
     end
 
     def full?
-      # evaluate if the board is full
-      false
+      grid.each do |row|
+        row.each do |location|
+          return false if location.nil?
+        end
+      end
+      true
     end
 
     def display_grid_for(player)
