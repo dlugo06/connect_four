@@ -18,9 +18,8 @@ module ConnectFour
     attr_reader :abort, :board, :players, :current_player_index
 
     def play
-      response = ui_loop
-      return if response.empty?
-      board.set_disc(response)
+      ui_loop
+      board.update(current_player)
       current_player.reset_location
       assign_next_player
     rescue Interrupt

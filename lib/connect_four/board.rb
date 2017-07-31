@@ -1,19 +1,22 @@
 require 'pry'
 module ConnectFour
   class Board
-    attr_reader :current_move, :size, :grid
+    attr_reader :size, :grid
 
     def initialize
       # @ size = [rows, columns]
-      @size = [6, 7]
       # @grid is array or arrays of nil or player objects
+      @size = [6, 7]
       @grid = create_grid_from_size(size)
     end
 
-    def set_disc(column)
-      # game calls play which calls board.play
-      @current_move = column
-      update
+    def update(player)
+      column = player.location
+      (size[0] - 1).downto(0) do |row|
+        if grid[row][column].nil?
+          return grid[row][column] = player
+        end
+      end
     end
 
     def connect_four?
@@ -36,9 +39,7 @@ module ConnectFour
 
     private
 
-    def update
-      # update the board's state based on the player's move
-    end
+
 
     def create_grid_from_size(size_arr)
       rows = size_arr[0]
