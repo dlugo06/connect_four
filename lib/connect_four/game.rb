@@ -1,3 +1,4 @@
+require 'pry'
 module ConnectFour
   class Game
     def initialize
@@ -17,14 +18,21 @@ module ConnectFour
     attr_reader :abort, :board, :players, :current_player_index
 
     def play
-      board.display_grid
-      column = current_player.move
-      return if move.empty?
-
-      board.set_disc(column)
+      response = ui_loop
+      return if response.empty?
+      board.set_disc(response)
+      current_player.reset_location
       assign_next_player
     rescue Interrupt
       @abort = true
+    end
+
+    def ui_loop
+      current_player.sanitize_location(board.size[0])
+      board.display_grid_for(current_player)
+      response = current_player.move
+      ui_loop unless response == 'd'
+      response
     end
 
     def welcome

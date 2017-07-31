@@ -1,3 +1,4 @@
+require 'pry'
 module ConnectFour
   class Board
     attr_reader :current_move, :size, :grid
@@ -13,7 +14,6 @@ module ConnectFour
       # game calls play which calls board.play
       @current_move = column
       update
-      render
     end
 
     def connect_four?
@@ -26,19 +26,15 @@ module ConnectFour
       false
     end
 
-    def display_grid
+    def display_grid_for(player)
       system('clear')
-      print 'Move (L)eft or (R)ight then (Enter) to select where to drop your disc.'
-      print grid_string
-      collect_response
+      puts "#{player.name}'s turn"
+      puts 'Move (L)eft or (R)ight then (D)rop to select where to drop your disc.'
+      print display_icon_at_location(player)
+      puts grid_string
     end
 
     private
-
-    def render
-      puts "[board] updated with move: #{current_move}"
-      puts
-    end
 
     def update
       # update the board's state based on the player's move
@@ -55,13 +51,11 @@ module ConnectFour
       disc.nil? ? ' ' : icons[disc.color.to_sym]
     end
 
-    def collect_response
-      response = STDIN.gets.chomp.downcase
-      unless response == 'l' || response == 'r'
-        print "Please select only (L)eft or (R)ight (or Ctrl-C to quit)"
-        collect_response
-      end
-      response
+    def display_icon_at_location(player)
+      output = ' ' * 7
+      spaces = player.location
+      icon = icons[player.color.to_sym]
+      output + ('   ' * spaces) + icon
     end
 
     def icons
