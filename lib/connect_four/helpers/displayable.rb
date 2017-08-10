@@ -6,9 +6,9 @@ module ConnectFour
       system('clear')
       names = []
       puts 'Player 1 please enter your name:'
-      names << STDIN.gets.chomp.gsub(/[^A-Za-z ]/, '').capitalize
+      names << STDIN.gets.chomp.gsub(/[^A-Za-z]/, '').capitalize
       puts 'Player 2 please enter your name:'
-      names << STDIN.gets.chomp.gsub(/[^A-Za-z ]/, '').capitalize
+      names << STDIN.gets.chomp.gsub(/[^A-Za-z]/, '').capitalize
     end
 
     # explain the results after game has ended
@@ -50,7 +50,7 @@ module ConnectFour
         end
         str += "|\n"
       end
-      str
+      final ? (puts str) : str
     end
 
     private
