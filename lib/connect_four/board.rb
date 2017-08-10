@@ -52,16 +52,6 @@ module ConnectFour
       true
     end
 
-    # clears screen and displays updated grid + current player location
-    # TODO: move this to the Game class
-    def display_grid_for(player)
-      system('clear')
-      puts "#{player.name}'s turn"
-      puts 'Move (L)eft or (R)ight then (D)rop to select where to drop your disc.'
-      puts Displayable::display_icon_at_location(player)
-      puts Displayable::display_grid(@size, @grid)
-    end
-
     # checks if a column is full (used to notify player and prevent update)
     def full_column?(location)
       !(grid[0][location].nil?)

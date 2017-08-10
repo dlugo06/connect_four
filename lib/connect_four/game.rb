@@ -2,6 +2,8 @@ require 'pry'
 
 module ConnectFour
   class Game
+    attr_reader :abort, :board, :players, :current_player_index, :winner
+
     def initialize
       @board   = Board.new
       @players = []
@@ -11,14 +13,18 @@ module ConnectFour
 
     # initiates game loop
     def launch
-      welcome
+      player_names = Displayable::gather_names
+      ready_players(player_names)
       play until done?
-      summarize
+      Displayable::summarize(self)
+    end
+
+    # check if user has attempted to exit
+    def aborted?
+      @abort
     end
 
     private
-
-    attr_reader :abort, :board, :players, :current_player_index, :winner
 
     # defines a play made by a player. Continues until game is over.
     def play
@@ -33,7 +39,7 @@ module ConnectFour
     # loop that calls grid as well as current player location. continues on submit ('d')
     def ui_loop(notice = nil)
       current_player.sanitize_location(@board.size[0])
-      @board.display_grid_for(current_player)
+      Displayable::display_grid_for(current_player, @board)
       puts notice if notice
       response = current_player.move
       if response == 'q'
@@ -44,26 +50,6 @@ module ConnectFour
       invalid_column = column_full && !response.empty? && response == 'd'
       notice = invalid_column ? 'That column is full, try another.' : nil
       ui_loop(notice) unless response == 'd' && !(column_full)
-    end
-
-    # request names of players
-    # TODO: Allow for more than two players
-    def welcome
-      names = []
-      puts 'Player 1 please enter your name:'
-      names << STDIN.gets.chomp.capitalize
-      puts 'Player 2 please enter your name:'
-      names << STDIN.gets.chomp.capitalize
-      create_players(names)
-    end
-
-    # explain the results after game has ended
-    def summarize
-      full = @board.full?
-      puts
-      puts "Congratuations! #{@winner.name} has won!" if @winner
-      puts "The board is full, the game is a tie." if full
-      puts '[Connect Four] game has ended.' unless aborted?
     end
 
     # return current player
@@ -82,13 +68,8 @@ module ConnectFour
       @winner || board.full? || aborted?
     end
 
-    # check if user has attempted to exit
-    def aborted?
-      @abort
-    end
-
     # populate players array with player instances
-    def create_players(names_arr)
+    def ready_players(names_arr)
       names_arr.each { |name| @players << Player.new(name) }
       @players.each_with_index { |player, i| player.assign_color(i) }
     end
