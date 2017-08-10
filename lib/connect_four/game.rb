@@ -1,3 +1,5 @@
+require 'pry'
+
 module ConnectFour
   class Game
     def initialize
@@ -34,6 +36,10 @@ module ConnectFour
       @board.display_grid_for(current_player)
       puts notice if notice
       response = current_player.move
+      if response == 'q'
+        @abort = true
+        return
+      end
       column_full = @board.full_column?(current_player.location)
       invalid_column = column_full && !response.empty? && response == 'd'
       notice = invalid_column ? 'That column is full, try another.' : nil

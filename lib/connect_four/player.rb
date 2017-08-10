@@ -11,7 +11,7 @@ module ConnectFour
     # registers the move by the player. updates location accordingly.
     def move
       print "[#{name}]: "
-      result = STDIN.gets.chomp.downcase
+      result = STDIN.getch.chomp.downcase
       if result  == 'l'
         @location -= 1
       elsif result == 'r'
