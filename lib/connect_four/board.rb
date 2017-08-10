@@ -58,8 +58,8 @@ module ConnectFour
       system('clear')
       puts "#{player.name}'s turn"
       puts 'Move (L)eft or (R)ight then (D)rop to select where to drop your disc.'
-      print display_icon_at_location(player)
-      puts grid_string
+      puts Displayable::display_icon_at_location(player)
+      puts Displayable::display_grid(@size, @grid)
     end
 
     # checks if a column is full (used to notify player and prevent update)
@@ -131,11 +131,6 @@ module ConnectFour
       rows = size_arr[0]
       columns = size_arr[1]
       Array.new(rows) { Array.new(columns) }
-    end
-
-    # icon legend
-    def icons
-      { blue: '🔹', gold: '🔸' }
     end
   end
 end
