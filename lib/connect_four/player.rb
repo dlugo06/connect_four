@@ -9,15 +9,12 @@ module ConnectFour
     end
 
     # registers the move by the player. updates location accordingly.
-    def move
-      print "[#{name}]: "
-      result = STDIN.getch.chomp.downcase
-      if result  == 'l'
+    def update_location(input)
+      if input  == "\e[D"
         @location -= 1
-      elsif result == 'r'
+      elsif input == "\e[C"
         @location += 1
       end
-      result
     end
 
     # resets location. Called after every Game#play loop

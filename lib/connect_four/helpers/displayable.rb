@@ -25,12 +25,38 @@ module ConnectFour
     def self.display_grid_for(player, board)
       system('clear')
       puts "#{player.name}'s turn"
-      puts 'Move (L)eft or (R)ight to select where to drop your disc. (Q) to Quit.'
+      puts 'Use ⟸  and ⟹  to move left and right. ⬇︎  to select where to drop your disc. (q) to Quit.'
       print display_icon_at_location(player)
       puts display_grid(board.size, board.grid)
     end
 
+    # loop that calls grid as well as current player location.
+    def self.ui_loop(player, board, notice = nil)
+      player.sanitize_location(board.size[0])
+      display_grid_for(player, board)
+      puts notice if notice
+      move = collect_move(player)
+      player.update_location(move)
+      raise Interrupt if move == 'q'
+      column_full = board.full_column?(player.location)
+      invalid_column = column_full && !move.empty? && move == "\e[B"
+      notice = invalid_column ? 'That column is full, try another.' : nil
+      ui_loop(player, board, notice) unless move == "\e[B" && !(column_full)
+    end
+
     private
+
+    def self.collect_move(player)
+      print "[#{player.name}]: "
+      STDIN.echo = false
+      STDIN.raw!
+      result = STDIN.getch.chomp.downcase
+      result << STDIN.read_nonblock(2) rescue nil if result == "\e"
+    ensure
+      STDIN.echo = true
+      STDIN.cooked!
+      return result
+    end
 
     # generates the grid that is displayed, filling it with current board
     def self.display_grid(size, grid)

@@ -1,5 +1,3 @@
-require 'pry'
-
 module ConnectFour
   class Game
     attr_reader :abort, :board, :players, :current_player_index, :winner
@@ -9,6 +7,7 @@ module ConnectFour
       @players = []
       @current_player_index = 0
       @winner = false # winner will either be false or a player instance
+      @abort = false
     end
 
     # initiates game loop
@@ -28,28 +27,12 @@ module ConnectFour
 
     # defines a play made by a player. Continues until game is over.
     def play
-      ui_loop
+      Displayable::ui_loop(current_player, @board)
       @board.update(current_player)
       current_player.reset_location
       assign_next_player
     rescue Interrupt
       @abort = true
-    end
-
-    # loop that calls grid as well as current player location. continues on submit ('d')
-    def ui_loop(notice = nil)
-      current_player.sanitize_location(@board.size[0])
-      Displayable::display_grid_for(current_player, @board)
-      puts notice if notice
-      response = current_player.move
-      if response == 'q'
-        @abort = true
-        return
-      end
-      column_full = @board.full_column?(current_player.location)
-      invalid_column = column_full && !response.empty? && response == 'd'
-      notice = invalid_column ? 'That column is full, try another.' : nil
-      ui_loop(notice) unless response == 'd' && !(column_full)
     end
 
     # return current player
