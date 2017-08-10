@@ -53,19 +53,6 @@ RSpec.describe ConnectFour::Board do
     end
   end
 
-  describe '#display_grid_for' do
-    before(:example) do
-      allow(board).to receive(:system)
-      suppress_stdin('l')
-    end
-
-    it 'displays a grid with icons' do
-      board.instance_variable_set(:@grid, d_win)
-      expect{ board.send(:display_grid_for, player1) }.to output(include('🔹', '🔸')).to_stdout
-      expect{ board.send(:display_grid_for, player1) }.to_not output(include('nil')).to_stdout
-    end
-  end
-
   describe '#full_column?' do
     it 'correctly displays if a column is full' do
     end
@@ -105,22 +92,6 @@ RSpec.describe ConnectFour::Board do
   describe '#create_grid_from_size' do
     it 'creates empty grid' do
       expect(board.grid).to eq empty_grid(board.size)
-    end
-  end
-
-  describe '#display_disc' do
-    it 'displays a single icon when found' do
-    end
-
-    it 'displays blank when not found' do
-    end
-  end
-
-  describe '#grid_string' do
-    it 'outputs a 6 by 7 grid' do
-    end
-
-    it 'includes the correct discs' do
     end
   end
 end

@@ -52,10 +52,10 @@ module ConnectFour
 
     # used to properly align the current player location w/ game board
     def self.display_icon_at_location(player)
-      output = ' '
+      offset = ' '
       spaces = player.location
       icon = icons[player.color.to_sym]
-      output + ('   ' * spaces) + icon
+      offset + ('   ' * spaces) + icon
     end
 
     # icon legend
