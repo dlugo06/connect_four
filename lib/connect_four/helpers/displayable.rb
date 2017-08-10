@@ -6,9 +6,9 @@ module ConnectFour
       system('clear')
       names = []
       puts 'Player 1 please enter your name:'
-      names << STDIN.gets.chomp.capitalize
+      names << STDIN.gets.chomp.gsub(/[^A-Za-z ]/, '').capitalize
       puts 'Player 2 please enter your name:'
-      names << STDIN.gets.chomp.capitalize
+      names << STDIN.gets.chomp.gsub(/[^A-Za-z ]/, '').capitalize
     end
 
     # explain the results after game has ended
@@ -36,6 +36,23 @@ module ConnectFour
       ui_loop(player, board, notice) unless move == "\e[B" && !(column_full)
     end
 
+    # generates the grid that is displayed, filling it with current board
+    def self.display_grid(size, grid, final = false)
+      if final
+        system('clear')
+        puts
+        puts
+      end
+      str = "\n"
+      (size[0]).times do |y|
+        (size[1]).times do |x|
+          str += %(|#{display_disc(y, x, grid)} )
+        end
+        str += "|\n"
+      end
+      str
+    end
+
     private
 
     # clears screen and displays updated grid + current player location
@@ -57,18 +74,6 @@ module ConnectFour
       STDIN.echo = true
       STDIN.cooked!
       return result
-    end
-
-    # generates the grid that is displayed, filling it with current board
-    def self.display_grid(size, grid)
-      str = "\n"
-      (size[0]).times do |y|
-        (size[1]).times do |x|
-          str += %(|#{display_disc(y, x, grid)} )
-        end
-        str += "|\n"
-      end
-      str
     end
 
     # used to display a 'disc' based on location and contents (nil or player)
