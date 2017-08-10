@@ -47,7 +47,7 @@ module ConnectFour
 
     # check if game play is complete (ie: a player won or the boad is full)
     def done?
-      @winner = board.connect_four?
+      @winner = Referee::connect_four?(@board)
       Displayable::display_grid(@board.size, @board.grid, true) if @winner
       @winner || board.full? || aborted?
     end

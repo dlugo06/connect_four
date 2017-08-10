@@ -24,30 +24,6 @@ RSpec.describe ConnectFour::Board do
     end
   end
 
-  describe '#connect_four?' do
-    context 'win' do
-      it 'verifies horizontal win' do
-        board.instance_variable_set(:@grid, h_win)
-        expect(board.connect_four?).to eq player1
-      end
-
-      it 'verifies vertical win' do
-        board.instance_variable_set(:@grid, v_win)
-        expect(board.connect_four?).to eq player1
-      end
-
-      it 'verifies diagonal win' do
-        board.instance_variable_set(:@grid, d_win)
-        expect(board.connect_four?).to eq player2
-      end
-    end
-
-    context 'no winner yet' do
-      it 'returns false when there is no winner' do
-      end
-    end
-  end
-
   describe '#full?' do
     it 'correctly assesses if board if full' do
     end
@@ -55,37 +31,6 @@ RSpec.describe ConnectFour::Board do
 
   describe '#full_column?' do
     it 'correctly displays if a column is full' do
-    end
-  end
-
-  describe '#check_location' do
-    it 'returns nil if out of bounds' do
-    end
-
-    it 'returns nil if it equals nil' do
-    end
-
-    it 'returns a player instance if found' do
-    end
-  end
-
-  describe 'assessors' do
-    context 'vertical' do
-      it 'checks 3 values above' do
-      end
-    end
-
-    context 'horizontal' do
-      it 'checks 3 values to the right' do
-      end
-    end
-
-    context 'diagonal' do
-      it 'checks 3 values diagonally up and right' do
-      end
-
-      it 'checks 3 values diagonally up and left' do
-      end
     end
   end
 
