@@ -10,6 +10,7 @@ RSpec.describe ConnectFour::Displayable do
 
   describe '::gather_names' do
     it 'returns a list of names' do
+      allow(displayable).to receive(:system)
       suppress_stdout
       suppress_stdin('alice')
       names = displayable.gather_names
@@ -19,7 +20,7 @@ RSpec.describe ConnectFour::Displayable do
 
   describe '::summarize' do
     let(:game) { ConnectFour::Game.new }
-    
+
     it 'displays the winner when there is a winner' do
       allow(game).to receive(:winner).and_return(player2)
       expect{ displayable.summarize(game) }. to output("\nCongratuations! bob has won!\n[Connect Four] The game has ended.\n").to_stdout

@@ -3,6 +3,7 @@ module ConnectFour
     # request names of players
     # TODO: Allow for more than two players
     def self.gather_names
+      system('clear')
       names = []
       puts 'Player 1 please enter your name:'
       names << STDIN.gets.chomp.capitalize
@@ -21,15 +22,6 @@ module ConnectFour
       puts goodbye(game)
     end
 
-    # clears screen and displays updated grid + current player location
-    def self.display_grid_for(player, board)
-      system('clear')
-      puts "#{player.name}'s turn"
-      puts 'Use ⟸  and ⟹  to move left and right. ⬇︎  to select where to drop your disc. (q) to Quit.'
-      print display_icon_at_location(player)
-      puts display_grid(board.size, board.grid)
-    end
-
     # loop that calls grid as well as current player location.
     def self.ui_loop(player, board, notice = nil)
       player.sanitize_location(board.size[0])
@@ -45,6 +37,15 @@ module ConnectFour
     end
 
     private
+
+    # clears screen and displays updated grid + current player location
+    def self.display_grid_for(player, board)
+      system('clear')
+      puts "#{player.name}'s turn"
+      puts 'Use ⟸  and ⟹  to move left and right. ⬇︎  to select where to drop your disc. (q) to Quit.'
+      print display_icon_at_location(player)
+      puts display_grid(board.size, board.grid)
+    end
 
     def self.collect_move(player)
       print "[#{player.name}]: "
