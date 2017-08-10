@@ -7,17 +7,10 @@ module ConnectFour
       result = false
       (board.size[0] - 1).downto(0) do |y|
         board.grid[y].each_with_index do |disc, x|
-          starting = check_location(y, x, board)
-          if starting
-            player = starting
-            vertical_win = vertical_assess([y - 1, x], player, board)
-            return vertical_win if vertical_win
-            horizontal_win = horizontal_assess([y, x + 1], player, board)
-            return horizontal_win if horizontal_win
-            diagonal_right_win = diagonal_right_assess([y - 1, x + 1], player, board)
-            return diagonal_right_win if diagonal_right_win
-            diagonal_left_win = diagonal_left_assess([y - 1, x - 1], player, board)
-            return diagonal_left_win if diagonal_left_win
+          assessor_types = ['dr', 'dl', 'v', 'h']
+          assessor_types.each do |type|
+            winner = assessor(y, x, board, type)
+            return winner if winner
           end
         end
       end
@@ -33,56 +26,33 @@ module ConnectFour
       board.grid[y][x]
     end
 
-    # the following 4 methods are massively not DRY
-    # TODO: refactor these 4 methods!
-    # checks second third and fourth locations of potential connect four.
-    # checks a rising diagonal
-    def self.diagonal_right_assess(location, player, board)
-      comparison = []
-      current = []
-      3.times do |i|
-        comparison << player
-        current << check_location(location[0] - i, location[1] + i, board)
-        return false unless comparison == current
+    # will check for a win of the given type
+    def self.assessor(y, x, board, type)
+      operators = case type
+      when 'dr'
+        [:-, :+]
+      when 'dl'
+        [:-, :-]
+      when 'v'
+        [:-, :itself]
+      when 'h'
+        [:itself, :+]
       end
-      player
-    end
 
-    # checks second third and fourth locations of potential connect four.
-    # checks a dropping diagonal
-    def self.diagonal_left_assess(location, player, board)
+      player = check_location(y, x, board)
       comparison = []
+      player ? comparison << player : (return false)
       current = []
-      3.times do |i|
-        comparison << player
-        current << check_location(location[0] - i, location[1] - i, board)
+      4.times do |i|
+        current << if operators[0] == :itself && operators[1] != :itself
+          check_location(y.public_send(operators[0]), x.public_send(operators[1], i), board)
+        elsif operators[1] == :itself && operators[0] != :itself
+          check_location(y.public_send(operators[0], i), x.public_send(operators[1]), board)
+        else
+          check_location(y.public_send(operators[0], i), x.public_send(operators[1], i), board)
+        end
         return false unless comparison == current
-      end
-      player
-    end
-
-    # checks second third and fourth locations of potential connect four.
-    # checks vertical axis
-    def self.vertical_assess(location, player, board)
-      comparison = []
-      current = []
-      3.times do |i|
         comparison << player
-        current << check_location(location[0] - i, location[1], board)
-        return false unless comparison == current
-      end
-      player
-    end
-
-    # checks second third and fourth locations of potential connect four.
-    # checks horizontal axis
-    def self.horizontal_assess(location, player, board)
-      comparison = []
-      current = []
-      3.times do |i|
-        comparison << player
-        current << check_location(location[0], location[1] + i, board)
-        return false unless comparison == current
       end
       player
     end
